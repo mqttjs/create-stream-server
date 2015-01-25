@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "create multiple stream servers easily",
   "main": "index.js",
+  "contributors": [
+    "Joël Gähwiler <joel.gaehwiler@gmail.com> (https://github.com/256dpi)",
+    "Matteo Collina <matteo.collina@gmail.com> (https://github.com/mcollina)"
+  ],
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter list *.js"
   },
@@ -10,7 +14,6 @@
     "type": "git",
     "url": "https://github.com/mqttjs/create-stream-server.git"
   },
-  "author": "Joël Gähwiler <joel.gaehwiler@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mqttjs/create-stream-server/issues"
