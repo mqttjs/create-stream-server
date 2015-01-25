@@ -1,0 +1,29 @@
+{
+  "name": "create-stream-server",
+  "version": "0.0.1",
+  "description": "create multiple stream servers easily",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter list *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mqttjs/create-stream-server.git"
+  },
+  "author": "Joël Gähwiler <joel.gaehwiler@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mqttjs/create-stream-server/issues"
+  },
+  "homepage": "https://github.com/mqttjs/create-stream-server",
+  "dependencies": {
+    "async": "0.9.0",
+    "server-destroy": "1.0.0",
+    "underscore": "1.7.0",
+    "websocket-stream": "1.3.2",
+    "ws": "0.7.0"
+  },
+  "devDependencies": {
+    "mocha": "2.1.0"
+  }
+}
