@@ -3,7 +3,6 @@ var tls = require('tls');
 var http = require('http');
 var https = require('https');
 var ws = require('ws');
-var _ = require('underscore');
 var url = require('url');
 var wsStream = require('websocket-stream');
 var async = require('async');
@@ -53,7 +52,9 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
 
   var servers = {};
 
-  _.each(serverConfig, function(config, id){
+  Object.keys(serverConfig).forEach(function(id) {
+    var config = serverConfig[id];
+
     if(typeof config == 'string') {
       var c = url.parse(config);
       config = {
@@ -63,9 +64,8 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
       };
     }
 
-    config = _.defaults(config, sharedConfig, {
-      host: 'localhost'
-    });
+    config.host = config.host || sharedConfig.host || 'localhost';
+    config.ssl = config.ssl || sharedConfig.ssl;
 
     var server;
 
@@ -79,8 +79,8 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
       server = createSecureWebSocketServer(config.ssl, clientStreamHandler);
     }
 
-    server._host = config.host;
-    server._port = config.port;
+    server._css_host = config.host;
+    server._css_port = config.port;
 
     servers[id] = server;
   });
@@ -88,24 +88,23 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
   return {
     servers: servers,
     listen: function(callback){
-      async.series(_.map(servers, function(server){
-        return function(cb){
-          server.listen(server._port, server._host, function(){
-            enableDestroy(server);
-            cb();
-          });
-        }
-      }), callback);
+      async.mapSeries(Object.keys(servers), function(id, cb){
+        var server = servers[id];
+        server.listen(server._css_port, server._css_host, function(){
+          enableDestroy(server);
+          cb();
+        });
+      }, callback || function(){});
     },
-    close: function(cb){
-      async.series(_.map(servers, function(server){
-        return server.close.bind(server);
-      }), cb);
+    close: function(callback){
+      async.mapSeries(Object.keys(servers), function(id, cb){
+        servers[id].close(cb);
+      }, callback || function(){});
     },
-    destroy: function(cb){
-      async.series(_.map(servers, function(server){
-        return server.destroy.bind(server);
-      }), cb);
+    destroy: function(callback){
+      async.mapSeries(Object.keys(servers), function(id, cb){
+        servers[id].destroy(cb);
+      }, callback || function(){});
     }
   };
 };
