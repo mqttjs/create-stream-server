@@ -2,6 +2,7 @@ var assert = require('assert');
 var fs = require('fs');
 var net = require('net');
 var tls = require('tls');
+var http = require('http');
 var ws = require('ws');
 
 var css = require('./index');
@@ -145,6 +146,22 @@ describe('create-stream-server', function(){
 
     servers.listen(function(){
       servers.close(function(){
+        done();
+      });
+    });
+  });
+
+  it('should allow attaching ws servers to an existing http server', function(done) {
+    var httpServer = http.createServer();
+
+    var servers = css({
+      s3: {
+        attach: httpServer
+      }
+    }, function(){});
+
+    servers.listen(function () {
+      servers.close(function () {
         done();
       });
     });

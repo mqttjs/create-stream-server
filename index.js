@@ -26,6 +26,7 @@ function attachServer(server, clientHandler) {
   })).on('connection', function(ws) {
     clientHandler(wsStream(ws));
   });
+  return server;
 }
 
 function createWebSocketServer(clientHandler){
@@ -69,7 +70,10 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
 
     var server;
 
-    if(config.protocol == 'tcp') {
+    if(config.attach) {
+      server = attachServer(config.attach, clientStreamHandler);
+      server._css_exclude = true;
+    } else if(config.protocol == 'tcp') {
       server = createServer(clientStreamHandler);
     } else if(config.protocol == 'ssl') {
       server = createSecureServer(config.ssl, clientStreamHandler);
@@ -90,20 +94,25 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
     listen: function(callback){
       async.mapSeries(Object.keys(servers), function(id, cb){
         var server = servers[id];
+        if(server._css_exclude) return cb();
         server.listen(server._css_port, server._css_host, function(){
           enableDestroy(server);
-          cb();
+          return cb();
         });
       }, callback || function(){});
     },
     close: function(callback){
       async.mapSeries(Object.keys(servers), function(id, cb){
-        servers[id].close(cb);
+        var server = servers[id];
+        if(server._css_exclude) return cb();
+        server.close(cb);
       }, callback || function(){});
     },
     destroy: function(callback){
       async.mapSeries(Object.keys(servers), function(id, cb){
-        servers[id].destroy(cb);
+        var server = servers[id];
+        if(server._css_exclude) return cb();
+        server.destroy(cb);
       }, callback || function(){});
     }
   };
