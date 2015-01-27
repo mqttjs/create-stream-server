@@ -18,6 +18,9 @@ var servers = css({
       key: fs.readFileSync('./wss_server.key'),
       cert: fs.readFileSync('./wss_server.crt')
     }
+  },
+  s4: {
+    attach: existingHttpServer
   }
 }, {
   ssl: {
