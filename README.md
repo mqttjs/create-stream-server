@@ -1,4 +1,4 @@
-# create-stream-server&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/create-stream-server.png)](https://travis-ci.org/mqttjs/create-stream-server)
+# create-stream-server&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/create-stream-server.png)](https://travis-ci.org/mqttjs/create-stream-server) [![npm version](https://badge.fury.io/js/create-stream-server.svg)](http://badge.fury.io/js/create-stream-server)
 
 **create multiple stream servers easily**
 
