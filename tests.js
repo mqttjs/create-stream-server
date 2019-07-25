@@ -166,4 +166,24 @@ describe('create-stream-server', function(){
       });
     });
   });
+
+  it('should throw error if negative attach and unknow protocol', function(done) {
+    try {
+      var servers = css({
+        s1: {
+          attach: null,
+          protocol: 'unknow-protocol',
+          host: 'localhost',
+          port: 9010
+        }
+      }, function() {});
+    } catch(err) {
+      assert.deepStrictEqual(
+        err,
+        new Error('negative attach and unknow protocol'),
+        'negative attach and unknow protocol should error'
+      );
+      done();
+    }
+  })
 });

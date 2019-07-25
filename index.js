@@ -83,6 +83,10 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
       server = createSecureWebSocketServer(config.ssl, clientStreamHandler);
     }
 
+    if (!server) {
+      throw new Error('negative attach and unknow protocol');
+    }
+
     server._css_host = config.host;
     server._css_port = config.port;
 
