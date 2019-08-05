@@ -81,6 +81,8 @@ module.exports = function(serverConfig, sharedConfig, clientStreamHandler){
       server = createWebSocketServer(clientStreamHandler);
     } else if(config.protocol == 'wss') {
       server = createSecureWebSocketServer(config.ssl, clientStreamHandler);
+    } else {
+      throw new Error('negative attach and unknow protocol');
     }
 
     server._css_host = config.host;
